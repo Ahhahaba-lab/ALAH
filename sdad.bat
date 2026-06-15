@@ -1,11 +1,7 @@
 @echo off
-echo Finding current session...
-
-for /f "skip=1 tokens=3" %%s in ('query user %USERNAME%') do (
-    echo Transferring session %%s to console...
-    %windir%\System32\tscon.exe %%s /dest:console
-    goto :eof
+for /f "tokens=1,2,3,4" %%a in ('query user') do (
+    if /i "%%d"=="Active" (
+        tscon %%c /dest:console
+        exit /b
+    )
 )
-
-echo Failed to find session ID.
-pause
